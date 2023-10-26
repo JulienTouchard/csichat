@@ -15,3 +15,6 @@ sendMessage.addEventListener("click",()=>{
         "date":date
     })
 })
+client.on("newGlobalMessage",(data)=>{
+    console.dir(data);
+})

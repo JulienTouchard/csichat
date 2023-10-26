@@ -43,11 +43,15 @@ io.on('connection', client => {
             tmpMessages = JSON.parse(dataMsg);
             tmpMessages.messages.push(data);
             console.dir(tmpMessages);
+            // 1 enregistrement du nouveau message dans le json
             fs.writeFile("./data/messages.json", JSON.stringify(tmpMessages), (err) => {
                 console.dir(err);
             })
+            // 2 envoie du message à tous les clients du serveur
+            client.broadcast.emit("newGlobalMessage",{"data":data});
         })
-    })
+         
+    }) 
 
     client.on('disconnect', () => { /* … */ });
 });
