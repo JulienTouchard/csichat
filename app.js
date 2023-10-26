@@ -36,6 +36,14 @@ io.on('connection', client => {
         });
         // j'ai besoin d'acceder à user.json confronter mes log et pwd
     });
+    client.on("getMessages",()=>{
+        let tmpMessages;
+        fs.readFile("./data/messages.json", (err, dataMsg) => {
+            console.log("error : " + err);
+            tmpMessages = JSON.parse(dataMsg);
+            client.emit("sendGlobalMessages",{"data":tmpMessages});
+        })
+    })
     client.on("newMessage", (data) => {
         let tmpMessages;
         fs.readFile("./data/messages.json", (err, dataMsg) => {
@@ -50,7 +58,7 @@ io.on('connection', client => {
             // 2 envoie du message à tous les clients du serveur
             client.broadcast.emit("newGlobalMessage",{"data":data});
         })
-         
+
     }) 
 
     client.on('disconnect', () => { /* … */ });
